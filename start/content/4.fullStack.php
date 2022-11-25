@@ -14,7 +14,7 @@
     $index = fopen($path . '/index.php', 'w');
     $indexContent = '<?php
     define("ROOT", dirname(__FILE__));
-    define("PROOT", "/projects/apiGenerator/' . $appName . '/");
+    define("PROOT", "/projects/phpGenerator/' . $appName . '/");
 
     function autoLoad($className)  
     {
@@ -132,44 +132,16 @@ DB_PASSWORD=' . $password . '';
 
         public function save()
         {
-            $data = $this;
-            $fields="";
-            $values=[];
-            $ready="";
+            $keys = array_filter(array_keys((array)$this),function($key){return $key!="id";});
+            $values = array_values(array_filter((array)$this,function($key){return $key!="id";},ARRAY_FILTER_USE_KEY));
             if(!isset($this->id)){
-            foreach($data as $key=>$value){
-                if($key!="id"){
-                    $fields.=$key.",";
-                    array_push($values,$value);
-                    $ready.="?,";
-                }
-            }
-            $fields=trim($fields,",");
-            $ready=trim($ready,",");
-            $sql = "insert into ".get_called_class()."(".$fields.") values(".$ready.")";
-        }else{
-            $sql = "update ".get_called_class()." set ";
-            $data = $this;
-            $newData = $this;
-            $newDataKeys=[];
-            $values=array();
-            foreach ($newData as $key => $value) {
-                if($value!=null && $key!="id")
-                array_push($newDataKeys,$key);
-            }
-            foreach($data as $key=>$value){
-                if($key!="id"){
-                $sql.=$key."=? ,";
-                if(in_array($key,$newDataKeys))
-                array_push($values,$this->$key);
-                else
-                array_push($values,$value);
-                }
-            }
-            $sql=trim($sql,",");
-            $sql.=" where id={$this->id}";
-        }
-            
+                $sql="insert into ".get_called_class()." (".implode(",",$keys).") values(";
+                for($i=0;$i<count($values);$i++)
+                $sql.="?,";
+                $sql=substr($sql,0,-1).")";
+            }else{
+                $sql = "update ".get_called_class()." set ".implode("=?, ",$keys)."=? where id ={$this->id}";       
+            }          
             $stm = self::$pdo->prepare($sql);
             return $stm->execute($values) ? true : ["error"=>$stm->errorInfo()];
             
