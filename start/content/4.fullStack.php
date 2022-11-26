@@ -289,10 +289,20 @@ DB_PASSWORD=' . $password . '';
     mkdir($path . "/public");
     mkdir($path . "/public/css");
     touch($path . "/public/css/style.css");
+    $content='
+    body{
+        font-family: "Courier New", Courier, monospace;
+    }
+    .form-control:focus {
+        border-color: #ecd527;
+        box-shadow: 0 0 0 0.2rem rgb(238, 229, 53);
+    } 
+    ';
+    file_put_contents($path . "/public/css/style.css", $content);
     mkdir($path . "/public/js");
     touch($path . "/public/js/script.js");
     mkdir($path . "/public/img");
-    $url = "https://media.istockphoto.com/id/1145498327/photo/light-template.jpg?b=1&s=170667a&w=0&k=20&c=Tnsu-av3dwrV0l6_Zlbf9mmg81HXB08X1yWe4y6s-E8=";
+    $url = "https://wallpaperaccess.com/full/1094672.jpg";
     $img = $path . "/public/img/backGround.jpg";
     file_put_contents($img, file_get_contents($url));
 
@@ -427,7 +437,7 @@ DB_PASSWORD=' . $password . '';
     <body>
 
     <nav class="nav justify-content-center my-3 h1">
-        <a style="font-size:3rem; font-weight:900 ;text-decoration: none;" class=" nav-link active " href="
+        <a style="font-size:3rem; font-weight:900 ;text-decoration: none;" class="  btn btn-outline-warning border-0  w-50 border-warning" href="
             <?=PROOT?>">Home</a>
     </nav>
 
@@ -459,7 +469,7 @@ DB_PASSWORD=' . $password . '';
 
         <div class="container my-5">
             <div class="row text-center">
-                    <div class="alert col col-4 mx-auto alert-dark display-4">' . $table . '</div>
+                    <div class="bg-warning rounded col col-sm-8 col-md-6  mx-auto alert-warning display-4 text-uppercase">' . $table . '</div>
             </div>
         </div>
         <?php $this->end()?>
@@ -468,20 +478,20 @@ DB_PASSWORD=' . $password . '';
         
         
         <div class="row justify-content-center text-center h5">
-            <div class="col-4">
-                <a href="<?=PROOT?>'.$table.'/addForm" class="btn btn-outline-secondary">Add new ' . $table . ' <i class="bi bi-plus" aria-hidden="true"></i></a>
+            <div class="col-12 col-md-4">
+                <a href="<?=PROOT?>'.$table.'/addForm" class="btn btn-outline-warning">Add new ' . $table . ' <i class="bi bi-plus" aria-hidden="true"></i></a>
             </div>
         </div>
         
         
         <div class="row justify-content-center text-center my-5 ">
-            <div class="col-6">
+            <div class="col-auto col-md-10">
             <?php
         
         if(isset($data)){
             ?>
         <table class="table table-striped table-inverse table-responsive">
-            <thead class="thead-inverse">
+            <thead class="thead-inverse bg-warning">
                 <tr>';
         foreach ($data[$table] as $key => $value) {
             $content .= '
@@ -489,6 +499,7 @@ DB_PASSWORD=' . $password . '';
                     <th>' . $key . '</th>';
         }
         $content .= '
+        <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -497,12 +508,14 @@ DB_PASSWORD=' . $password . '';
                 ';
         foreach ($data[$table] as $key => $value) {
             $content .= '
-                    <td scope="row"><?= $item->' . $key . ' ?></td>';
+                    <td ><?= $item->' . $key . ' ?></td>';
         }
         $content .= '
                     <td>
-                        <a href="<?=PROOT?>' . $table . '/updateForm/<?=$item->id?>" class="mx-2"><i class="bi bi-pen" aria-hidden="true"></i></a>
-                        <a href="<?=PROOT?>' . $table . '/delete/<?=$item->id?>" class="mx-2"><i class="bi bi-trash" aria-hidden="true"></i></a>
+                    <div  class="d-flex justify-content-evenly ">
+                        <a class="btn btn-outline-dark mx-2  my-3  " href="<?=PROOT?>' . $table . '/updateForm/<?=$item->id?>" class="mx-2"><i class="bi bi-pen" aria-hidden="true"></i></a>
+                        <a class="btn btn-outline-dark mx-2  my-3  " href="<?=PROOT?>' . $table . '/delete/<?=$item->id?>" class="mx-2"><i class="bi bi-trash" aria-hidden="true"></i></a>
+                    </div>
                     </td>
                 </tr>
                 <?php
@@ -536,7 +549,7 @@ DB_PASSWORD=' . $password . '';
 
     <div class="container mt-5">
         <div class="row text-center">
-            <div class="col-12 h2 text-success">
+            <div class="col-12 mx-auto font-weight-bold h2 text-warning border-bottom border-2 border-warning w-50">
                 <?= !isset($data) ? "Add Form" : "Modify Form" ?>
             </div>
         </div>
@@ -566,7 +579,7 @@ DB_PASSWORD=' . $password . '';
                     <input type="text" class="form-control" id="id" name="id" value="<?= !isset($data) ? "" : $data ->id ?>" hidden readonly>
                     </div>
                     <div class="card-footer text-center ">
-                            <button type="submit" class="btn btn-primary btn-lg  w-50">Submit</button>
+                            <button type="submit" class="btn btn-warning btn-lg  w-50">Submit</button>
                         </div>
                 </div>
                 </div>
@@ -601,7 +614,7 @@ DB_PASSWORD=' . $password . '';
 
     <div class="container">
         <div class="row">
-            <div style="margin-top:10% ;" class="alert col-lg-6 col-md-8 col-sm-12 mx-auto alert-primary text-center">
+            <div style="margin-top:10% ;" class="alert col-lg-6 col-md-8 col-sm-12 mx-auto alert-dark text-center">
                 <h1>Full-Stack</h1>
                 <p class="display-6">Welcome To Your App ♥</p>
                 <select id="tableSelect" class="form-select" aria-label="Default select example">
@@ -622,7 +635,7 @@ DB_PASSWORD=' . $password . '';
     <script>
         $(document).ready(function(){
             $("#tableSelect").change(function(){
-                $("#table").html($("#tableSelect").val()).addClass("btn btn-lg btn-outline-primary").attr("href","<?=PROOT?>"+$("#tableSelect").val());
+                $("#table").html($("#tableSelect").val()).addClass("btn btn-lg btn-outline-dark").attr("href","<?=PROOT?>"+$("#tableSelect").val());
             });
         });
 

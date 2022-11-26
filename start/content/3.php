@@ -70,7 +70,7 @@ if (!empty($_POST['db'])) {
 
 
                                 <div class="card-footer">
-                                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" name="submit" class="btn btn-outline-dark">Submit</button>
                                 </div>
                             </form>
 
