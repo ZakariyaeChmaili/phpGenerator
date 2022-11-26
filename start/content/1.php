@@ -1,6 +1,6 @@
 
     <center>
-        <div class="container  mt-5">
+        <div class="container ">
             <div class="row">
                 <div class="col col-12 col-md-8  col-lg-6 mx-auto">
                     <div class="card">
@@ -29,7 +29,7 @@
                                     <input type="text" name="password" id="" class="form-control" placeholder="" aria-describedby="helpId">
                                 </div> 
                                 <div class="card-footer">
-                                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" name="submit" class="btn btn-warning">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -40,14 +40,6 @@
     </center>
 
 
-
-
-<!-- Initialize the plugin: -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#example-getting-started').multiselect();
-    });
-</script>
 
 
 

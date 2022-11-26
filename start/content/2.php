@@ -11,7 +11,7 @@ if (!empty($_POST['port'])) {
 ?>
 
             <center>
-                <div class="container mt-5">
+                <div class="container ">
                     <div class="row">
                         <div class="col col-12 col-md-8  col-lg-6 mx-auto">
                             <div class="card">
@@ -40,7 +40,7 @@ if (!empty($_POST['port'])) {
                                         <input type="text" value="<?= $_POST['host'] ?>" name="host" hidden>
                                         <input type="text" value="<?= $_POST['password'] ?>" name="password" hidden>
                                         <div class="card-footer">
-                                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" name="submit" class="btn btn-warning">Submit</button>
                                         </div>
                                     </form>
 

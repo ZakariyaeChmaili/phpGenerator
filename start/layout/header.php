@@ -23,10 +23,10 @@
 
     }   
 </style>
-<div class=" py-3 mb-5 bg-dark d-flex justify-content-center text-center">
+<div class=" py-3 mb-5 bg-dark d-flex sticky-top justify-content-center text-center">
 
     <span style="font-size:1.2rem ; font-weight:200 ;" class="text-light ">PHP FrameWork Generator</span>
 
 </div>
-<body>
+<body style="padding-bottom:5%;">
 
