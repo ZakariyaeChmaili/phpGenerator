@@ -60,7 +60,7 @@
     //making the .env file
     touch($path . '/.env');
     $env = fopen($path . '/.env', 'w');
-$envContent = 'DB_CONNECTION=mysql
+    $envContent = 'DB_CONNECTION=mysql
 DB_HOST=' . $host . '
 DB_PORT=' . $port . '
 DB_DATABASE=' . $db . '
@@ -121,7 +121,7 @@ DB_PASSWORD=' . $password . '';
     $model = fopen($path . '/core/Model.php', 'w');
     $modelContent = '<?php
 
-    class Model {
+    abstract class  Model {
         protected static $pdo=null;
         public $id;
 
@@ -154,8 +154,6 @@ DB_PASSWORD=' . $password . '';
             return self::$pdo->exec($sql) ? true : ["error"=>self::$pdo->errorInfo()];
             
         }
-
-
 
         public static function find($id){
             $class=get_called_class();
@@ -199,7 +197,6 @@ DB_PASSWORD=' . $password . '';
 
     class Request{
         private static $request;
-
         public static function get(){
             self::$request =new stdClass();
             if(!empty($_POST)){
@@ -289,7 +286,7 @@ DB_PASSWORD=' . $password . '';
     mkdir($path . "/public");
     mkdir($path . "/public/css");
     touch($path . "/public/css/style.css");
-    $content='
+    $content = '
     body{
         font-family: "Courier New", Courier, monospace;
     }
@@ -298,17 +295,16 @@ DB_PASSWORD=' . $password . '';
         box-shadow: 0 0 0 0.2rem rgb(238, 229, 53);
     } 
     ';
+
     file_put_contents($path . "/public/css/style.css", $content);
     mkdir($path . "/public/js");
     touch($path . "/public/js/script.js");
     mkdir($path . "/public/img");
-    $url = "https://wallpaperaccess.com/full/1094672.jpg";
-    $img = $path . "/public/img/backGround.jpg";
-    file_put_contents($img, file_get_contents($url));
-
-
-
-
+    $url = ROOT . "/start/content/public/imgs/appBack.jpg";
+    $content = file_get_contents($url);
+    file_put_contents($path . "/public/img/backGround.jpg", $content);
+    file_put_contents($path . "/public/css/bootstrap.css", file_get_contents(ROOT . "/start/content/public/css/style1.css"));
+    file_put_contents($path . "/public/js/jquery.js", file_get_contents(ROOT . "/start/content/public/js/jquery.js"));
 
     //making the src folder
     $path = '../' . $appName . '/src';
@@ -426,11 +422,11 @@ DB_PASSWORD=' . $password . '';
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>    
+        <link rel="stylesheet" href="<?= PROOT ?>public/css/icons.css">
+        <script src="<?= PROOT ?>public/js/jquery.js" ></script>    
+        <link rel="stylesheet" type="text/css" href="<?= PROOT ?>public/css/bootstrap.css"  >
         <link rel="stylesheet" href="<?= PROOT ?>public/css/style.css">
+
     <title>Zak7killer</title>
     </head>
 
@@ -479,7 +475,10 @@ DB_PASSWORD=' . $password . '';
         
         <div class="row justify-content-center text-center h5">
             <div class="col-12 col-md-4">
-                <a href="<?=PROOT?>'.$table.'/addForm" class="btn btn-outline-warning">Add new ' . $table . ' <i class="bi bi-plus" aria-hidden="true"></i></a>
+                <a href="<?=PROOT?>' . $table . '/addForm" class="btn btn-outline-warning">Add new ' . $table . ' <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg></a>
             </div>
         </div>
         
@@ -513,8 +512,13 @@ DB_PASSWORD=' . $password . '';
         $content .= '
                     <td>
                     <div  class="d-flex justify-content-evenly ">
-                        <a class="btn btn-outline-dark mx-2  my-3  " href="<?=PROOT?>' . $table . '/updateForm/<?=$item->id?>" class="mx-2"><i class="bi bi-pen" aria-hidden="true"></i></a>
-                        <a class="btn btn-outline-dark mx-2  my-3  " href="<?=PROOT?>' . $table . '/delete/<?=$item->id?>" class="mx-2"><i class="bi bi-trash" aria-hidden="true"></i></a>
+                        <a class="btn btn-outline-dark mx-2  my-1  " href="<?=PROOT?>' . $table . '/updateForm/<?=$item->id?>" class="mx-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                      </svg></a>
+                        <a class="btn btn-outline-dark mx-2  my-1  " href="<?=PROOT?>' . $table . '/delete/<?=$item->id?>" class="mx-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg></i></a>
                     </div>
                     </td>
                 </tr>

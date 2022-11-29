@@ -9,14 +9,8 @@ if (!empty($_POST['db'])) {
     $conn = new PDO("mysql:host=$host;port=$port;dbname=$db", $user, $password);
     $tables = $conn->query("show tables")->fetchAll(PDO::FETCH_OBJ);
     $key = "Tables_in_$db";
-}
-
-
-
-
+}   
 ?>
-
-
     <center>
         <div class="container ">
             <div class="row">
@@ -33,7 +27,6 @@ if (!empty($_POST['db'])) {
                                         <?php foreach ($tables as $table) : ?>
                                             <option value="<?php echo $table->$key; ?>"><?php echo $table->$key; ?></option>
                                         <?php endforeach; ?>
-
                                     </select>
                                 </div>
                                 <div class="form-check">
@@ -52,7 +45,6 @@ if (!empty($_POST['db'])) {
                                             </label>
                                         </div>
                                     </div>
-
                                 </div>
                                 <input type="text" value="<?= $_POST['user'] ?>" name="user" hidden>
                                 <input type="text" value="<?= $_POST['port'] ?>" name="port" hidden>
@@ -60,13 +52,10 @@ if (!empty($_POST['db'])) {
                                 <input type="text" value="<?= $_POST['password'] ?>" name="password" hidden>
                                 <input type="text" value="<?= $_POST['db'] ?>" name="db" hidden>
                                 <input type="text" value="<?= $_POST['appName'] ?>" name="appName" hidden>
-
-
                                 <div class="card-footer">
                                     <button type="submit" name="submit" class="btn btn-outline-dark">Submit</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>

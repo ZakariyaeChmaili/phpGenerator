@@ -127,7 +127,7 @@ touch($path . '/core/Model.php');
 $model = fopen($path . '/core/Model.php', 'w');
 $modelContent = '<?php
 
-        class Model {
+    abstract class Model {
             protected static $pdo=null;
             public $id;
 
@@ -137,38 +137,29 @@ $modelContent = '<?php
             }
         
             public function save()
-            {
-                $data = (array) $this;
-                $fields="";
-                $values=array();
-                $ready="";
-                foreach($data as $key=>$value){
-                    if($key!="id"){
-                        $fields.=$key.",";
-                        array_push($values,$value);
-                        $ready.="?,";
-                    }
-                }
-                 $fields=trim($fields,",");
-                 $ready=trim($ready,",");
-                 $sql = "insert into ".get_called_class()."(".$fields.") values(".$ready.")";
-                 $stm = self::$pdo->prepare($sql);
-                 
-                
-                 return $stm->execute($values) ? true : ["error"=>$stm->errorInfo()];
-                
-            }
-        
-        
-        
+        {
+            $keys = array_filter(array_keys((array)$this),function($key){return $key!="id";});
+            $values = array_values(array_filter((array)$this,function($key){return $key!="id";},ARRAY_FILTER_USE_KEY));
+            if(!isset($this->id)){
+                $sql="insert into ".get_called_class()." (".implode(",",$keys).") values(";
+                for($i=0;$i<count($values);$i++)
+                $sql.="?,";
+                $sql=substr($sql,0,-1).")";
+            }else{
+                $sql = "update ".get_called_class()." set ".implode("=?, ",$keys)."=? where id ={$this->id}";       
+            }          
+            $stm = self::$pdo->prepare($sql);
+            return $stm->execute($values) ? true : ["error"=>$stm->errorInfo()];
+            
+        }
+     
             public function delete(){
                 $sql="delete from ".get_called_class()." where id={$this->id}";
                 return self::$pdo->exec($sql) ? true : ["error"=>self::$pdo->errorInfo()];
                 
             }
         
-        
-        
+          
             public static function find($id){
                 $class=get_called_class();
                 $sql="select * from ".$class." where id=$id";
@@ -186,33 +177,7 @@ $modelContent = '<?php
                 $res=self::$pdo->query($sql)->fetchAll(PDO::FETCH_OBJ);
                 return $res ? $res : null;
             }
-            
-            public function update(){
-                $object=self::find($this->id);
-                $sql = "update ".get_called_class()." set ";
-                    $data = (array) $object;
-                    $newData = (array) $this;
-                    $newDataKeys=[];
-                    $values=array();
-                    foreach ($newData as $key => $value) {
-                        if($value!=null && $key!="id")
-                        array_push($newDataKeys,$key);
-                    }
-                    foreach($data as $key=>$value){
-                        if($key!="id"){
-                        $sql.=$key."=? ,";
-                        if(in_array($key,$newDataKeys))
-                        array_push($values,$this->$key);
-                        else
-                        array_push($values,$value);
-                        }
-                    }
-                    $sql=trim($sql,",");
-                    $sql.=" where id={$this->id}";
-                    $stm=self::$pdo->prepare($sql);
-                    return $stm->execute($values) ? true : ["error"=>$stm->errorInfo()];
-            }
-        
+                   
         
         }
         
@@ -220,19 +185,6 @@ $modelContent = '<?php
 
 fwrite($model, $modelContent);
 fclose($model);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //making the src folder

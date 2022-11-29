@@ -27,7 +27,6 @@ if (!empty($_POST['port'])) {
                                                 <?php foreach ($databases as $database) : ?>
                                                     <option value="<?php echo $database->Database; ?>"><?php echo $database->Database; ?></option>
                                                 <?php endforeach; ?>
-
                                             </select>
                                         </div>
                                         <div class="form-group my-2">
