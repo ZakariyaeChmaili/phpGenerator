@@ -1,6 +1,8 @@
 <?php
         define("ROOT", dirname(__DIR__));
-        define("PROOT", "/projects/phpGenerator/start/");
+        //define("PROOT", "/projects/phpGenerator/start/");
+        define("PROOT", substr($_SERVER['PHP_SELF'],0,-9));
+
         require_once ROOT."/start/layout/header.php";      
         $url = $_GET["url"]; 
         $urlExplode  = explode("/", $url); 

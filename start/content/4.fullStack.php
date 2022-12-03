@@ -14,7 +14,7 @@
     $index = fopen($path . '/index.php', 'w');
     $indexContent = '<?php
     define("ROOT", dirname(__FILE__));
-    define("PROOT", "/projects/phpGenerator/' . $appName . '/");
+    define("PROOT", substr($_SERVER["PHP_SELF"],0,-9));
 
     function autoLoad($className)  
     {

@@ -13,7 +13,7 @@ touch($path . '/index.php');
 $index = fopen($path . '/index.php', 'w');
 $indexContent = '<?php
         define("ROOT", dirname(__FILE__));
-        define("PROOT", "/projects/' . $appName . '");
+        define("PROOT", substr($_SERVER["PHP_SELF"],0,-9));
         
     
         header("Access-Control-Allow-Origin: *"); //header that specify what urls have access to this api
